@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 
     // Set sensitive planes material, thickness and its size
     detray::material<scalar> sensitive_mat = detray::silicon<scalar>();
-    const scalar sensitive_thickness = 5.f * traccc::unit<scalar>::mm;
+    const scalar sensitive_thickness = 1.f * traccc::unit<scalar>::mm;
     detray::mask<detray::rectangle2D> sensitive_rect{0u,
                                                      100.f * traccc::unit<scalar>::mm,
                                                      100.f * traccc::unit<scalar>::mm};
@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
 
     // B field value and its type
     using b_field_t = covfie::field<detray::bfield::inhom_bknd_t>;
-    const auto field = detray::io::read_bfield<b_field_t>(field_opts.bfield_file);
+    b_field_t field = detray::io::read_bfield<b_field_t>(field_opts.bfield_file);
 
     auto sim = traccc::simulator<detector_type, b_field_t, generator_type,
                                  writer_type>(

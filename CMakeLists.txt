@@ -5,7 +5,7 @@ project( momentum_resolution LANGUAGES CXX )
 # Set up the used C++ standard(s).
 set( CMAKE_CXX_STANDARD 20 CACHE STRING "The (host) C++ standard to use" )
 
-find_package( Boost REQUIRED COMPONENTS program_options filesystem)
+find_package( Boost 1.86.0 REQUIRED COMPONENTS program_options filesystem log)
 
 # Include covfie and traccc
 add_subdirectory(extern/covfie)

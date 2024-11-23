@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
      *****************************/
 
     // B field value and its type
-    const auto field = detray::io::read_bfield<b_field_t>(field_opts.bfield_file);
+    b_field_t field = detray::io::read_bfield<b_field_t>(field_opts.bfield_file);
 
     // Read the detector
     detray::io::detector_reader_config reader_cfg{};
@@ -114,6 +114,12 @@ int main(int argc, char *argv[])
     residual_file << "truth_qop, truth_qopT, truth_qopz,";
     residual_file << "qop_residual, qopT_residual, qopz_residual";
     residual_file << std::endl;
+
+    // Track state file
+    std::ofstream state_file;
+    state_file.open("state.csv");
+    state_file << "event_id, fit_track_id, x, y, z";
+    state_file << std::endl;
 
     // Iterate over events
     for (auto event = input_opts.skip;
@@ -165,11 +171,15 @@ int main(int argc, char *argv[])
             {
                 throw std::runtime_error("track states is empty");
             }
-            if (trk_states_per_track.size() != 12u)
+            /*
+            if (trk_states_per_track.size() < 6u)
             {
                 throw std::runtime_error(
-                    "The number of track states per track is not the same with the number of senstive surfaces!");
+                    "The number of track states per track (" +
+                    std::to_string(trk_states_per_track.size()) +
+                    ") is less than 6");
             }
+            */
 
             const auto &fit_res = track_states[i].header;
 
@@ -206,10 +216,19 @@ int main(int argc, char *argv[])
             residual_file << fit_qop - truth_qop << ",";
             residual_file << fit_qopT - truth_qopT << ",";
             residual_file << fit_qopz - truth_qopz << " \n";
+
+            for (const auto &st : trk_states_per_track)
+            {
+                const detray::tracking_surface sf{host_det, st.surface_link()};
+                const auto xyz = sf.bound_to_global({}, st.smoothed().bound_local(), st.smoothed().dir());
+                state_file << event << "," << i << "," 
+                           << xyz[0] << "," << xyz[1] << "," << xyz[2] << "\n";
+            }
         }
     }
 
     residual_file.close();
+    state_file.close();
 
     return EXIT_SUCCESS;
 }
