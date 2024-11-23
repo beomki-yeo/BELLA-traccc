@@ -1,1 +1,15 @@
-Repository for BELLA experiment reconstruction with traccc
+## Repository for BELLA experiment reconstruction with traccc
+
+### Prerequisites
+- gcc >= 11.2 (C++ 20 support)
+- CMake >= 3.30.2
+- Boost >= 1.86.0 (program_options, filesystem, log)
+
+### How to run
+
+After compiling the repository, go to the `shell` directory and run the script
+
+```sh
+cd shell
+bash telescope_script.sh
+```
