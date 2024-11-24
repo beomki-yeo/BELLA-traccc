@@ -14,3 +14,5 @@ Make sure that `${BUILD_DIR}` in the script is consistent with the build directo
 cd shell
 bash telescope_script.sh
 ```
+
+Then it will create some output csv files at `data` directory
