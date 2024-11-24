@@ -7,7 +7,8 @@
 
 ### How to run
 
-After compiling the repository, go to the `shell` directory and run the script
+After compiling the repository, go to the `shell` directory and run the script.
+Make sure that `${BUILD_DIR}` in the script is consistent with the build directory
 
 ```sh
 cd shell
